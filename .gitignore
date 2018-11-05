@@ -2,3 +2,4 @@
 .git/
 env/
 microblog-0.5.zip
+app/__pycache__
