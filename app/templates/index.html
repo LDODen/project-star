@@ -1,0 +1,13 @@
+{% extends "template.html" %}
+
+{% block content %}
+{% if user %}
+<h1> hello {{ user[1] }}</h1> 
+{% endif %}
+
+<ul>
+{% for child in children %}
+<li> {{child[1]}} </li>
+{% endfor %}
+</ul>
+{% endblock %}

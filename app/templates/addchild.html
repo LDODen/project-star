@@ -1,0 +1,12 @@
+{% extends "template.html" %}
+
+{% block content %}
+<h1>Add child</h1>
+<form method="POST" action="">
+    {{ form.name.label }}
+    {{ form.name }}
+    {{ form.group.label }}
+    {{ form.group }}
+    <input type="submit" value="submit">
+</form>
+{% endblock %}

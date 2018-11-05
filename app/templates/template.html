@@ -1,0 +1,26 @@
+<html>
+<head>
+    {% if title %}
+    <title>{{title}} - project star</title>
+    {% else %}
+    <title>project star</title>
+    {% endif %}
+</head>
+<body>
+<div>project star:
+    <a href="{{ url_for('index') }}">Home</a>
+    {% if session["User"] %}
+    | <a href="{{ url_for('logout') }}">Logout</a>
+    | <a href="{{ url_for('addch') }}">Add children</a>
+    | <a href="{{ url_for('deletech') }}">Delete children</a>
+    | <a href="{{ url_for('addday') }}">Add day</a>
+    {% else %}
+    | <a href="{{ url_for('login') }}">Login</a>
+    | <a href="{{ url_for('register') }}">Register</a>
+    {% endif %}
+</div>
+
+{% block content %}{% endblock %}
+
+</body>
+</html>

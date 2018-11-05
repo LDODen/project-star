@@ -1,0 +1,11 @@
+{% extends "template.html" %}
+
+{% block content %}
+<h1>Delete child</h1>
+<form method="POST" action="">
+    {{ form.csrf_token }}
+    {{ form.name.label }}
+    {{ form.name }}
+    <input type="submit" value="submit">
+</form>
+{% endblock %}
