@@ -1,0 +1,5 @@
+uuid
+hashlib
+flask
+flask_wtf
+sqlite3

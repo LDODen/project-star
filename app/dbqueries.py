@@ -13,7 +13,7 @@ def insertuser(login, password):
 def viewchildren(user_id):
     conn = sqlite3.connect(db_name)
     cur = conn.cursor()
-    cur.execute("SELECT * FROM Children WHERE userid = ?", (user_id,))
+    cur.execute(r"SELECT * FROM children WHERE userid = ?", (user_id,))
     rows = cur.fetchall()
     conn.close()
     return rows
@@ -32,14 +32,20 @@ def getuserbylogin(user_login):
 def delete_child(name, userid):
     conn = sqlite3.connect(db_name)
     cur = conn.cursor()
-    cur.execute("DELETE FROM children WHERE name=? and userid=?", (name, userid,))
+    cur.execute(r"DELETE FROM children WHERE name=? and userid=?", (name, userid,))
     #cur.execute("DELETE FROM children WHERE name = ?", (name,))
     cur = conn.cursor()
     conn.commit()
     conn.close()
 
 def get_groups():
-    pass
+    conn = sqlite3.connect(db_name)
+    cur = conn.cursor()
+    cur.execute(r"select groups.*, school.name as school_name from groups left join school on groups.schoolid = school.id")
+    rows = cur.fetchall()
+    conn.close()
+    return rows
+
 #def update(q,p,i):
 #    conn = sqlite3.connect("lite.db")
 #    cur = conn.cursor()

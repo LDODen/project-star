@@ -9,6 +9,7 @@ from passw import hash_password, check_password
 app = Flask(__name__)
 app.config.from_object('config')
 
+
 @app.before_request
 def before_request():
     if (hasattr(g, "user")):

@@ -3,3 +3,4 @@
 env/
 microblog-0.5.zip
 app/__pycache__
+*.bak

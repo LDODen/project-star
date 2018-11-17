@@ -2,12 +2,15 @@
 
 {% block content %}
 <h1>Sign In</h1>
+        
         <form method="POST" action="">
             {{ form.csrf_token }}
             {{ form.login.label }}
             {{ form.login }}
             {{ form.password.label }}
             {{ form.password }}
-            <input type="submit" value="submit">
+            {{ form.submit() }} 
+            
+             <!---<input type="submit" value="submit">-->
         </form>
 {% endblock %}
