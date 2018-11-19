@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, session, url_for, request, g
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
 from forms import LoginForm, RegisterForm, AddChildForm, DeleteChildForm
-from dbqueries import insertuser, getuserbylogin, viewchildren, delete_child
+from dbqueries import insertuser, getuserbylogin, viewchildren, delete_child, add_child
 from passw import hash_password, check_password
 
 app = Flask(__name__)
@@ -42,6 +42,7 @@ def register():
         if(user is not None):
             return render_template('register.html', form = register_form)
         else:
+            # TODO: сделать проверку совпадения паролей (как вариант сделать ее потом на javascript)
             hp = hash_password(register_form.password.data)
             insertuser(register_form.login.data, hp)
             user = getuserbylogin(register_form.login.data) 
@@ -72,17 +73,25 @@ def logout():
     session["User"] = ""
     return redirect(url_for("index"))
 
-@app.route("/addch")    
+@app.route("/addch", methods = ["GET", "POST"])    
 def addch():
     add_child_form = AddChildForm()
-    if add_child_form.validate_on_submit():
-        pass
+    if request.method == "POST":
+        us = session["User"]
+        chname = request.form['name']
+        group = request.form['group']
+        add_child(chname, us[0], group)
+        return redirect(url_for("index"))
+        # тут почему-то не срабатывает валидация формы и сабмит 
+        # пришлось переделать через request.method
+        # TODO: надо разобраться, может попробовать form.validate()
+        #if add_child_form.validate_on_submit():
     return render_template('addchild.html', form = add_child_form)
 
 @app.route("/deletech", methods=["GET","POST"])    
 def deletech():
     del_child_form = DeleteChildForm()
-    if del_child_form.validate_on_submit():
+    if del_child_form.validate_on_submit(): 
         #print(del_child_form.name.data)
         #print(session["User"][0])
         delete_child(del_child_form.name.data, session["User"][0])    

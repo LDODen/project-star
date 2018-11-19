@@ -3,10 +3,11 @@
 {% block content %}
 <h1>Add child</h1>
 <form method="POST" action="">
+    {{ form.csrf_token }}
     {{ form.name.label }}
     {{ form.name }}
     {{ form.group.label }}
     {{ form.group }}
-    {{ form.submit() }} 
+    {{ form.submit() }}
 </form>
 {% endblock %}

@@ -6,6 +6,6 @@
     {{ form.csrf_token }}
     {{ form.name.label }}
     {{ form.name }}
-    <input type="submit" value="submit">
-</form>
+    {{ form.submit() }}
+ </form>
 {% endblock %}

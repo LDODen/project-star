@@ -3,6 +3,9 @@ import config
 
 db_name = "baseStar.db"
 
+# TODO: переделать как класс с одним коннектом при инициализации
+# TODO: засунуть connect в app.before_request и сохранять объект с подключением глобально в сессии
+
 def insertuser(login, password):
     conn = sqlite3.connect(db_name)
     cur = conn.cursor()
@@ -45,6 +48,15 @@ def get_groups():
     rows = cur.fetchall()
     conn.close()
     return rows
+
+def add_child(child_name, user_id, group_id):
+    print(child_name, user_id,group_id, sep=';')
+    conn = sqlite3.connect(db_name)
+    cur = conn.cursor()
+    cur.execute(r"INSERT into children VALUES (NUll, ?, ?, ?)", (child_name, user_id, group_id,))
+    conn.commit()
+    conn.close()
+
 
 #def update(q,p,i):
 #    conn = sqlite3.connect("lite.db")
