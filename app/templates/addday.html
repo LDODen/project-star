@@ -1,0 +1,15 @@
+{% extends "template.html" %}
+
+{% block content %}
+<h1>Add child</h1>
+<form method="POST" action="">
+    {{ form.csrf_token }}
+    {{ form.childName.label }}
+    {{ form.childName }}
+    {{ form.date.label }}
+    {{ form.date }}
+    {{ form.status.label }}
+    {{ form.status }}
+    {{ form.submit() }}
+</form>
+{% endblock %}

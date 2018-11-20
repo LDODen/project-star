@@ -2,8 +2,8 @@ from flask import Flask, render_template, redirect, session, url_for, request, g
 #from flask_login import current_user#login_required, login_user, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
-from forms import LoginForm, RegisterForm, AddChildForm, DeleteChildForm
-from dbqueries import insertuser, getuserbylogin, viewchildren, delete_child, add_child
+from forms import LoginForm, RegisterForm, AddChildForm, DeleteChildForm, AddChildForm, AddDayForm
+from dbqueries import insertuser, getuserbylogin, viewchildren, delete_child, add_child, add_day
 from passw import hash_password, check_password
 
 app = Flask(__name__)
@@ -97,9 +97,15 @@ def deletech():
         delete_child(del_child_form.name.data, session["User"][0])    
     return render_template('deletechild.html', form = del_child_form)
 
-@app.route("/addday")    
+@app.route("/addday", methods=["GET", "POST"])    
 def addday():
-    return redirect(url_for("index"))
+    us = session["User"]
+    add_day_form = AddDayForm(us[0])
+    #if add_day_form.validate():
+    if request.method == "POST":
+        add_day(add_day_form.date.data, add_day_form.childName.data, add_day_form.status.data)  
+        return redirect(url_for("index")) 
+    return render_template('addday.html', form = add_day_form)
 
 if (__name__ == '__main__'):
     app.run(debug=True)

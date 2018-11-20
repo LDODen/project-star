@@ -44,16 +44,28 @@ def delete_child(name, userid):
 def get_groups():
     conn = sqlite3.connect(db_name)
     cur = conn.cursor()
-    cur.execute(r"select groups.*, school.name as school_name from groups left join school on groups.schoolid = school.id")
+    cur.execute(r"SELECT groups.*, school.name as school_name from groups left join school on groups.schoolid = school.id")
     rows = cur.fetchall()
     conn.close()
     return rows
 
 def add_child(child_name, user_id, group_id):
-    print(child_name, user_id,group_id, sep=';')
     conn = sqlite3.connect(db_name)
     cur = conn.cursor()
     cur.execute(r"INSERT into children VALUES (NUll, ?, ?, ?)", (child_name, user_id, group_id,))
+    conn.commit()
+    conn.close()
+
+
+def add_day(date, child_id, status):
+    conn = sqlite3.connect(db_name)
+    cur = conn.cursor()
+    cur.execute(r"SELECT * from tabel where date = ? and childid = ?", (date, child_id, ))
+    rows = cur.fetchall()
+    if len(rows):
+        cur.execute(r"UPDATE tabel set value = ? where date = ? and childid = ? ", (status, date, child_id,))
+    else:    
+        cur.execute(r"INSERT into tabel VALUES (?, ?, ?, NUll)", (date, child_id, status,))
     conn.commit()
     conn.close()
 
