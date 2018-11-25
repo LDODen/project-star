@@ -10,4 +10,17 @@
 <li> {{child[1]}} </li>
 {% endfor %}
 </ul>
+
+<ul>
+{% for el in tabel %}
+<li> {{el[0][1]}} </li>
+<table>
+{% for day in el[1] %}
+<tr>
+    <td>{{day[0]}}</td><td>{{day[2]}}</td>
+</tr>
+{% endfor %}
+</table>
+{% endfor %}
+</ul>
 {% endblock %}

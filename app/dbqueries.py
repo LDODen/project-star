@@ -60,16 +60,24 @@ def add_child(child_name, user_id, group_id):
 def add_day(date, child_id, status):
     conn = sqlite3.connect(db_name)
     cur = conn.cursor()
-    cur.execute(r"SELECT * from tabel where date = ? and childid = ?", (date, child_id, ))
+    cur.execute(r"SELECT * from tabel where date = date(?) and childid = ?", (date, child_id, ))
     rows = cur.fetchall()
     if len(rows):
-        cur.execute(r"UPDATE tabel set value = ? where date = ? and childid = ? ", (status, date, child_id,))
+        cur.execute(r"UPDATE tabel set value = ? where date = date(?) and childid = ? ", (status, date, child_id,))
     else:    
-        cur.execute(r"INSERT into tabel VALUES (?, ?, ?, NUll)", (date, child_id, status,))
+        cur.execute(r"INSERT into tabel VALUES (date(?), ?, ?, NUll)", (date, child_id, status,))
     conn.commit()
     conn.close()
 
-
+def get_child_tabel(child_id, date_from, date_to):
+    conn = sqlite3.connect(db_name)
+    cur = conn.cursor()
+    cur.execute(r"SELECT * from tabel where date BETWEEN date(?) AND date(?) and childid = ? order by date", (date_from, date_to, child_id, ))
+    rows = cur.fetchall()
+    conn.commit()
+    conn.close()
+    return rows
+    
 #def update(q,p,i):
 #    conn = sqlite3.connect("lite.db")
 #    cur = conn.cursor()

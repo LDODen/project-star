@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, session, url_for, request, g
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
 from forms import LoginForm, RegisterForm, AddChildForm, DeleteChildForm, AddChildForm, AddDayForm
-from dbqueries import insertuser, getuserbylogin, viewchildren, delete_child, add_child, add_day
+from dbqueries import insertuser, getuserbylogin, viewchildren, delete_child, add_child, add_day, get_child_tabel
 from passw import hash_password, check_password
 
 app = Flask(__name__)
@@ -60,12 +60,17 @@ def index():
     if "User" in session:
         if (session["User"] != ""):
             children = viewchildren(session["User"][0])
+            tab = []
+            for ch in children:
+                tab.append([ch, get_child_tabel(ch[0], '2018-09-01', '2018-12-31')])    
         else:
             children = []    
+            tab = []
     else:
         session["User"] = ""
-        children = []        
-    return render_template("index.html", user = session["User"], children = children)
+        children = []
+        tab = []        
+    return render_template("index.html", user = session["User"], children = children, tabel = tab)
 
 @app.route("/logout")    
 def logout():

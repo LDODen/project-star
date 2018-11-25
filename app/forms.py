@@ -47,7 +47,7 @@ class DeleteChildForm(FlaskForm):
 class AddDayForm(FlaskForm):
         
     childName = SelectField('Child name')
-    date = DateField('Date', format='%Y-%m-%d')
+    date = DateField('Date', format="%Y-%m-%d")
     status = BooleanField('WasOrNot')
     submit = SubmitField('Add')
     
