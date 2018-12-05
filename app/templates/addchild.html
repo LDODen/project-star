@@ -1,13 +1,22 @@
 {% extends "template.html" %}
 
 {% block content %}
-<h1>Add child</h1>
-<form method="POST" action="">
+<h2 class = "ui header">Add child</h2>
+<form class = "ui form" method="POST" action="">
     {{ form.csrf_token }}
-    {{ form.name.label }}
-    {{ form.name }}
-    {{ form.group.label }}
-    {{ form.group }}
-    {{ form.submit() }}
+    <div class = "field">
+        <div class = "six wide field">
+            {{ form.name.label }}
+            {{ form.name }}
+        </div>
+    </div>
+
+    <div class = "field">
+        <div class = "six wide field">
+            {{ form.group.label }}
+            {{ form.group }}
+        </div>
+    </div>
+    {{ form.submit(class_ = "ui button") }}
 </form>
 {% endblock %}

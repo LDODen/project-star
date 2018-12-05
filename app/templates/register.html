@@ -1,15 +1,28 @@
 {% extends "template.html" %}
 
 {% block content %}
-<h1>Sign In</h1>
-<form method="POST" action="">
+<h2 class="ui header">Sign In</h2>
+<form class="ui form" method="POST" action="">
     {{ form.csrf_token }}
-    {{ form.login.label }}
-    {{ form.login }}
+
+    <div class="field">
+    <div class="six wide field">
+        {{ form.login.label }}
+        {{ form.login }}
+    </div>
+    </div>    
+    <div class="field">
+    <div class="six wide field">
     {{ form.password.label }}
     {{ form.password }}
+    </div>
+    </div>
+    <div class="field">
+    <div class="six wide field">
     {{ form.passwordRepeat.label }}
     {{ form.passwordRepeat }}
-    {{ form.submit() }}
+    </div>
+    </div>
+    {{ form.submit(class_="ui button") }}
 </form>
 {% endblock %}

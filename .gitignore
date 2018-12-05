@@ -2,5 +2,8 @@
 .git/
 env/
 microblog-0.5.zip
+app/__pycache__/*
 app/__pycache__
 *.bak
+Semantic-UI-CSS-master.zip
+Semantic-UI-LESS-master.zip

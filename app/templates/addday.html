@@ -1,15 +1,27 @@
 {% extends "template.html" %}
 
 {% block content %}
-<h1>Add child</h1>
-<form method="POST" action="">
+<h2 class="ui header">Add child</h2>
+<form class="ui form" method="POST" action="">
     {{ form.csrf_token }}
-    {{ form.childName.label }}
-    {{ form.childName }}
-    {{ form.date.label }}
-    {{ form.date }}
+    <div class="field">
+        <div class="six wide field">
+            {{ form.childName.label }}
+            {{ form.childName }}
+        </div>
+    </div>            
+    <div class="field">
+        <div class="six wide field">
+            {{ form.date.label }}
+            {{ form.date }}
+        </div>
+    </div>
+    <div class="inline field">
+        <div class="ui checkbox">
     {{ form.status.label }}
     {{ form.status }}
-    {{ form.submit() }}
+        </div>
+    </div>
+    {{ form.submit(class_="ui button") }}
 </form>
 {% endblock %}

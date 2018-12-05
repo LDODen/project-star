@@ -2,18 +2,20 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField,  BooleanField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import InputRequired
-from dbqueries import get_groups, viewchildren
+from dbqueries import dbq #get_groups, viewchildren
 
 
 def get_groups_choices():
-    choices = get_groups()
+    db = dbq("baseStar.db")
+    choices = db.get_groups()
     ch = []
     for item in choices:
         ch.append((item[0] , item[3] + ' '+ item[1]))
     return ch
 
 def get_user_childs(user_id):
-    childs = viewchildren(user_id)
+    db = dbq("baseStar.db")
+    childs = db.viewchildren(user_id)
     ch = []
     for item in childs:
         ch.append((item[0], item[1]))
