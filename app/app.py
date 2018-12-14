@@ -96,22 +96,13 @@ def tabel(childid):
     if tabel_form.date_from.data == None:
         tabel_form.date_from.data = get_first_monthday(datetime.now())
         tabel_form.date_till.data = get_last_monthday(datetime.now())
-    #'''
+    
     if request.method == "POST":
-    #if tabel_form.validate_on_submit():
-        '''if request.form['date_from'] == None:
-            date_begin = get_first_monthday(datetime.now())
-            date_end   = get_last_monthday(datetime.now())
-        else:'''
-        date_begin = request.form['date_from'] #.strftime("%Y-%m-%d")
-        date_end = request.form['date_till'] #.strftime("%Y-%m-%d")
-        print(date_begin)
-        print(date_end)
-    #'''   
+        date_begin = request.form['date_from']
+        date_end = request.form['date_till']
         if "User" in session:
             if (session["User"] != ""):
                 tab = []
-                #tab.append([childid, g.db.get_child_tabel(childid, get_first_monthday(datetime.now()), get_last_monthday(datetime.now()))])
                 tab.append([childid, g.db.get_child_tabel(childid, date_begin, date_end)])
             else:
                 tab = []
@@ -119,7 +110,8 @@ def tabel(childid):
         else:    
             return redirect(url_for("login"))
     tab = []
-    tab.append([childid, g.db.get_child_tabel(childid, get_first_monthday(datetime.now()), get_last_monthday(datetime.now()))])        
+    #tab.append([childid, g.db.get_child_tabel(childid, get_first_monthday(datetime.now()), get_last_monthday(datetime.now()))])        
+    tab.append([childid, g.db.get_child_tabel(childid, tabel_form.date_from.data, tabel_form.date_till.data)])
     return render_template("tabel.html", tabel = tab, form = tabel_form) 
 
 @app.route("/logout")    
