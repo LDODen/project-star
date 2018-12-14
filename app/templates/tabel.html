@@ -1,0 +1,37 @@
+{% extends "template.html" %}
+
+{% block content %}
+<h2 class="ui header">Tabel</h2>
+<form class="ui form" method="POST" action="">
+    {{ form.csrf_token }}
+    <div class="field">
+        <div class="six wide field">
+            {{ form.date_from.label }}
+            {{ form.date_from}}
+        </div>
+    </div>   
+
+    <div class="field">
+        <div class="six wide field">
+            {{ form.date_till.label }}
+            {{ form.date_till}}
+        </div>
+    </div>
+    {{ form.submit(class_="ui button") }}
+</form>
+
+<ul>
+    {% for el in tabel %}
+    <li> {{el[0][1]}}</li>
+    <table>
+        {% for day in el[1] %}
+        <tr>
+            <td>{{day[0]}}</td>
+            <td>{{day[2]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endfor %}
+</ul>
+
+{% endblock %}

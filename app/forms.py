@@ -3,6 +3,8 @@ from wtforms import StringField, PasswordField, SubmitField, SelectField,  Boole
 from wtforms.fields.html5 import DateField
 from wtforms.validators import InputRequired
 from dbqueries import dbq #get_groups, viewchildren
+from datetime import datetime, date, timedelta
+
 
 
 def get_groups_choices():
@@ -56,3 +58,9 @@ class AddDayForm(FlaskForm):
     def __init__(self, user_id, *args, **kwargs):
         super(AddDayForm, self).__init__(*args, **kwargs)
         self.childName.choices = get_user_childs(user_id)
+
+
+class TabelForm(FlaskForm):
+    date_from = DateField('Date from', format="%Y-%m-%d")
+    date_till = DateField('Date till', format="%Y-%m-%d")
+    submit = SubmitField('Show')

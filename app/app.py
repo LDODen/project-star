@@ -1,8 +1,9 @@
+from datetime import datetime, date, timedelta
 from flask import Flask, render_template, redirect, session, url_for, request, g
 #from flask_login import current_user#login_required, login_user, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
-from forms import LoginForm, RegisterForm, AddChildForm, DeleteChildForm, AddChildForm, AddDayForm
+from forms import LoginForm, RegisterForm, AddChildForm, DeleteChildForm, AddChildForm, AddDayForm, TabelForm
 #from dbqueries import insertuser, getuserbylogin, viewchildren, delete_child, add_child, add_day, get_child_tabel, dbq
 from dbqueries import dbq
 from passw import hash_password, check_password
@@ -12,6 +13,17 @@ app.config.from_object('config')
 ctx = app.app_context()
 ctx.push()
 
+def get_last_monthday(now):
+    selected_date = date(datetime.now().year, datetime.now().month, datetime.now().day)
+    if selected_date.month == 12: # December
+        last_day_selected_month = date(selected_date.year, selected_date.month, 31) #.strftime("%Y-%m-%d")
+    else:
+        last_day_selected_month = date(selected_date.year, selected_date.month + 1, 1) - timedelta(days=1) #.strftime("%Y-%m-%d")
+    return last_day_selected_month 
+
+def get_first_monthday(now):
+    selected_date = date(datetime.now().year, datetime.now().month, 1)
+    return selected_date #.strftime("%Y-%m-%d") 
 
 @app.before_request
 def before_request():
@@ -64,10 +76,11 @@ def index():
     #print("2", session["User"])
     if "User" in session:
         if (session["User"] != ""):
+
             children = g.db.viewchildren(session["User"][0])
             tab = []
             for ch in children:
-                tab.append([ch, g.db.get_child_tabel(ch[0], '2018-09-01', '2018-12-31')])
+                tab.append([ch, g.db.get_child_tabel(ch[0], get_first_monthday(datetime.now()), get_last_monthday(datetime.now()))])
         else:
             children = []    
             tab = []
@@ -76,6 +89,38 @@ def index():
         children = []
         tab = []        
     return render_template("index.html", user = session["User"], children = children, tabel = tab)
+
+@app.route("/tabel/<childid>", methods = ["GET", "POST"])
+def tabel(childid):
+    tabel_form = TabelForm()
+    if tabel_form.date_from.data == None:
+        tabel_form.date_from.data = get_first_monthday(datetime.now())
+        tabel_form.date_till.data = get_last_monthday(datetime.now())
+    #'''
+    if request.method == "POST":
+    #if tabel_form.validate_on_submit():
+        '''if request.form['date_from'] == None:
+            date_begin = get_first_monthday(datetime.now())
+            date_end   = get_last_monthday(datetime.now())
+        else:'''
+        date_begin = request.form['date_from'] #.strftime("%Y-%m-%d")
+        date_end = request.form['date_till'] #.strftime("%Y-%m-%d")
+        print(date_begin)
+        print(date_end)
+    #'''   
+        if "User" in session:
+            if (session["User"] != ""):
+                tab = []
+                #tab.append([childid, g.db.get_child_tabel(childid, get_first_monthday(datetime.now()), get_last_monthday(datetime.now()))])
+                tab.append([childid, g.db.get_child_tabel(childid, date_begin, date_end)])
+            else:
+                tab = []
+            return render_template("tabel.html", tabel = tab, form = tabel_form)  #,user = session["User"]  
+        else:    
+            return redirect(url_for("login"))
+    tab = []
+    tab.append([childid, g.db.get_child_tabel(childid, get_first_monthday(datetime.now()), get_last_monthday(datetime.now()))])        
+    return render_template("tabel.html", tabel = tab, form = tabel_form) 
 
 @app.route("/logout")    
 def logout():
