@@ -80,11 +80,18 @@ def index():
             tab = []
             for ch in children:
                 #tab.append([ch, g.db.get_child_tabel(ch[0], get_first_monthday(datetime.now()), get_last_monthday(datetime.now()))])
-                tab.append([
-                    ch,
-                    g.db.get_tabel_with_prices(
+                rows = g.db.get_tabel_with_prices(
                         ch[0], get_first_monthday(datetime.now()),
                         get_last_monthday(datetime.now()))
+                
+                price_sum = 0
+                for row in rows:
+                    price_sum = price_sum + row[4]
+
+                tab.append([
+                    ch,
+                    rows,
+                    price_sum
                 ])
 
         else:
@@ -110,9 +117,15 @@ def tabel(childid):
             if (session["User"] != ""):
                 tab = []
                 #tab.append([childid, g.db.get_child_tabel(childid, date_begin, date_end)])
+                rows = g.db.get_tabel_with_prices(childid, date_begin, date_end)
+                price_sum = 0
+                for row in rows:
+                    price_sum = price_sum + row[4]
+
                 tab.append([
                     childid,
-                    g.db.get_tabel_with_prices(childid, date_begin, date_end)
+                    rows,
+                    price_sum
                 ])
             else:
                 tab = []
@@ -121,10 +134,16 @@ def tabel(childid):
             return redirect(url_for("login"))
     tab = []
     #tab.append([childid, g.db.get_child_tabel(childid, tabel_form.date_from.data, tabel_form.date_till.data)])
+    rows = g.db.get_tabel_with_prices(childid, tabel_form.date_from.data,
+                                   tabel_form.date_till.data)
+    price_sum = 0
+    for row in rows:
+        price_sum = price_sum + row[4]
+
     tab.append([
         childid,
-        g.db.get_tabel_with_prices(childid, tabel_form.date_from.data,
-                                   tabel_form.date_till.data)
+        rows, 
+        price_sum
     ])
     return render_template("tabel.html", tabel = tab, form = tabel_form)
 

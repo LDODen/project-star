@@ -26,10 +26,10 @@
     <table class = "ui green collapsing table">
         <thead>
             <tr>
-               <td>Дата</td>
-               <td>Был(или нет)</td>
-               <td>Дата цены</td>
-               <td>Стоимость за день</td>
+               <th>Дата</th>
+               <th>Был(или нет)</th>
+               <th>Дата цены</th>
+               <th>Стоимость за день</th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +42,14 @@
             </tr>
         {% endfor %}
         </tbody>
+        <tfoot>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th class = "center aligned">{{el[2]}}</th>
+            </tr>
+        </tfoot>
     </table>
     {% endfor %}
 </ul>
