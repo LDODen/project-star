@@ -14,12 +14,26 @@
 <ul>
 {% for el in tabel %}
 <li> {{el[0][1]}} <a href="{{url_for('tabel', childid = el[0][0])}}"> table</a></li>
-<table>
-{% for day in el[1] %}
-<tr>
-    <td>{{day[0]}}</td><td>{{day[2]}}</td>
-</tr>
-{% endfor %}
+<table class = "ui collapsing green table">
+    <thead>
+        <tr>
+            <td>Дата</td>
+            <td>Был(или нет)</td>
+            <td>Дата цены</td>
+            <td>Стоимость за день</td>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for day in el[1] %}
+        <tr>
+            <td>{{day[0]}}</td>
+            <td class="center aligned">{{day[2]}}</td>
+            <td>{{day[3]}}</td>
+            <td class="center aligned">{{day[4]}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 {% endfor %}
 </ul>
