@@ -57,6 +57,16 @@ class dbq():
             self.cur.execute(r"INSERT into tabel VALUES (date(?), ?, ?, NUll)", (date, child_id, status,))
         self.conn.commit()
 
+    def add_price(self, date, group_id, price):
+        self.cur.execute(r"SELECT * from prices where price_date = date(?) and groupid = ?", (date, group_id, ))
+        rows = self.cur.fetchall()
+        if len(rows):
+            self.cur.execute(
+                r"UPDATE prices set price = ? where price_date = date(?) and groupid = ? ", (price, date, group_id, ))
+        else:
+            self.cur.execute(r"INSERT into prices VALUES (NUll, date(?), ?, ?)", (date, price, group_id,))
+        self.conn.commit()
+
     def get_groups(self):
         self.cur.execute(r"SELECT groups.*, school.name as school_name from groups left join school on groups.schoolid = school.id")
         rows = self.cur.fetchall()

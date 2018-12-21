@@ -1,27 +1,30 @@
 {% extends "template.html" %}
 
 {% block content %}
-<h2 class="ui header">Add child</h2>
+<h2 class="ui header">Prices</h2>
+
 <form class="ui form" method="POST" action="">
     {{ form.csrf_token }}
     <div class="field">
         <div class="four wide field">
-            {{ form.childName.label }}
-            {{ form.childName }}
+            {{ form.group_name.label }}
+            {{ form.group_name }}
         </div>
-    </div>            
+    </div>
     <div class="field">
         <div class="four wide field">
-            {{ form.date.label }}
-            {{ form.date }}
+            {{ form.price_date.label }}
+            {{ form.price_date }}
         </div>
     </div>
     <div class="field">
-        <div class="ui checkbox">
-            {{ form.status }}
-            {{ form.status.label }}
+        <div class="four wide field">
+            {{ form.date_sum.label }}
+            {{ form.date_sum }}
         </div>
     </div>
+
     {{ form.submit(class_="ui button") }}
 </form>
+
 {% endblock %}

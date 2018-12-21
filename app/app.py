@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, session, url_for, request, g
 #from flask_login import current_user#login_required, login_user, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
-from forms import LoginForm, RegisterForm, AddChildForm, DeleteChildForm, AddChildForm, AddDayForm, TabelForm
+from forms import LoginForm, RegisterForm, AddChildForm, DeleteChildForm, AddChildForm, AddDayForm, TabelForm, PricesForm
 from dbqueries import dbq
 from passw import hash_password, check_password
 
@@ -83,7 +83,7 @@ def index():
                 rows = g.db.get_tabel_with_prices(
                         ch[0], get_first_monthday(datetime.now()),
                         get_last_monthday(datetime.now()))
-                
+
                 price_sum = 0
                 for row in rows:
                     price_sum = price_sum + row[4]
@@ -116,35 +116,29 @@ def tabel(childid):
         if "User" in session:
             if (session["User"] != ""):
                 tab = []
-                #tab.append([childid, g.db.get_child_tabel(childid, date_begin, date_end)])
                 rows = g.db.get_tabel_with_prices(childid, date_begin, date_end)
                 price_sum = 0
                 for row in rows:
                     price_sum = price_sum + row[4]
 
-                tab.append([
-                    childid,
-                    rows,
-                    price_sum
-                ])
+                tab = [childid,
+                        rows,
+                        price_sum]
             else:
                 tab = []
             return render_template("tabel.html", tabel = tab, form = tabel_form)  #,user = session["User"]
         else:
             return redirect(url_for("login"))
     tab = []
-    #tab.append([childid, g.db.get_child_tabel(childid, tabel_form.date_from.data, tabel_form.date_till.data)])
     rows = g.db.get_tabel_with_prices(childid, tabel_form.date_from.data,
                                    tabel_form.date_till.data)
     price_sum = 0
     for row in rows:
         price_sum = price_sum + row[4]
 
-    tab.append([
-        childid,
-        rows, 
-        price_sum
-    ])
+    tab = [childid,
+            rows,
+            price_sum]
     return render_template("tabel.html", tabel = tab, form = tabel_form)
 
 @app.route("/logout")
@@ -152,6 +146,16 @@ def logout():
     g.user = ""
     session["User"] = ""
     return redirect(url_for("index"))
+
+
+@app.route("/prices", methods = ["GET", "POST"])
+def prices():
+    prices_form = PricesForm()
+    if request.method == "POST":
+        g.db.add_price(prices_form.price_date.data, prices_form.group_name.data, prices_form.date_sum.data)
+        return redirect(url_for("prices"))
+    return render_template("prices.html", form = prices_form)
+
 
 @app.route("/addch", methods = ["GET", "POST"])
 def addch():
