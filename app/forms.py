@@ -61,12 +61,12 @@ class AddDayForm(FlaskForm):
 
 
 class TabelForm(FlaskForm):
-    date_from = DateField('Date from', format="%Y-%m-%d")
-    date_till = DateField('Date till', format="%Y-%m-%d")
-    submit = SubmitField('Show')
+    date_from = DateField('Дата с', format="%Y-%m-%d")
+    date_till = DateField('Дата по', format="%Y-%m-%d")
+    submit = SubmitField('Показать')
 
 class PricesForm(FlaskForm):
-    group_name = SelectField('Group name', choices=get_groups_choices())
-    price_date = DateField('Date of price', format="%Y-%m-%d")
-    date_sum = FloatField('Sum', default = 0.0)
-    submit = SubmitField('Set')
+    group_name = SelectField('Группа', choices=get_groups_choices())
+    price_date = DateField('Дата цены', format="%Y-%m-%d")
+    date_sum = FloatField('Сумма', default = 0.0)
+    submit = SubmitField('Установить')

@@ -91,7 +91,8 @@ def index():
                 tab.append([
                     ch,
                     rows,
-                    price_sum
+                    price_sum,
+                    len(rows)
                 ])
 
         else:
@@ -123,7 +124,7 @@ def tabel(childid):
 
                 tab = [childid,
                         rows,
-                        price_sum]
+                        price_sum, len(rows)]
             else:
                 tab = []
             return render_template("tabel.html", tabel = tab, form = tabel_form)  #,user = session["User"]
@@ -136,9 +137,7 @@ def tabel(childid):
     for row in rows:
         price_sum = price_sum + row[4]
 
-    tab = [childid,
-            rows,
-            price_sum]
+    tab = [childid, rows, price_sum, len(rows)]
     return render_template("tabel.html", tabel = tab, form = tabel_form)
 
 @app.route("/logout")
