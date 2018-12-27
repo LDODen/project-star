@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, session, url_for, request, g
 #from flask_login import current_user#login_required, login_user, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
-from forms import LoginForm, RegisterForm, AddChildForm, DeleteChildForm, AddChildForm, AddDayForm, TabelForm, PricesForm
+from forms import LoginForm, RegisterForm, AddChildForm, DeleteChildForm, AddChildForm, AddDayForm, TabelForm, PricesForm, SchoolForm, GroupsForm, AccountsForm, PaymentsForm
 from dbqueries import dbq
 from passw import hash_password, check_password
 
@@ -189,6 +189,43 @@ def addday():
         g.db.add_day(add_day_form.date.data, add_day_form.childName.data, add_day_form.status.data)
         return redirect(url_for("index"))
     return render_template('addday.html', form = add_day_form)
+
+#
+#
+#
+@app.route("/schools", methods=["GET", "POST"])
+def schools():
+    add_school_form = SchoolForm()
+    if request.method == "POST":
+        chname = request.form['name']
+        g.db.add_school(chname,
+                        'add' if add_school_form.submitAdd.data else 'del')
+        return redirect(url_for("index"))
+    return render_template('addschool.html', form=add_school_form)
+
+
+@app.route("/groups", methods=["GET", "POST"])
+def groups():
+    add_group_form = GroupsForm()
+    school = ""
+    if request.method == "POST":
+        us = session["User"]
+        group_name = request.form['name']
+        school_id = request.form['school']
+        g.db.add_group(group_name, school_id)
+        return redirect(url_for("index"))
+    return render_template('addgroup.html', form=add_group_form, par=school)
+
+
+@app.route("/accounts", methods=["GET", "POST"])
+def accounts():
+    add_account_form = AccountsForm()
+    if request.method == "POST":
+        account_name = request.form['name']
+        g.db.add_account(account_name)
+        return redirect(url_for("index"))
+    accounts_list = g.db.get_accounts()
+    return render_template('addaccounts.html', form=add_account_form, acc = accounts_list)
 
 if (__name__ == '__main__'):
     app.run(debug=True)

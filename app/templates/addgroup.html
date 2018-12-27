@@ -1,0 +1,26 @@
+{% extends "template.html" %}
+
+{% block content %}
+<h2 class="ui header">Add group</h2>
+<form class="ui form" method="POST" action="">
+    {{ form.csrf_token }}
+
+    <div class="field">
+        <div class="four wide field">
+            {{ form.name.label }}
+            {{ form.name }}
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="four wide field">
+            {{ form.school.label }}
+            {{ form.school }}
+        </div>
+    </div>
+
+    {{ form.submitAdd(class_ = "ui button") }}
+
+    <p>{{par}}</p>
+</form>
+{% endblock %}

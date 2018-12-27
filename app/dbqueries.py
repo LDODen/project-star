@@ -96,3 +96,33 @@ class dbq():
     def delete_child(self, name, userid):
         self.cur.execute(r"DELETE FROM children WHERE name=? and userid=?", (name, userid,))
         self.conn.commit()
+
+    def get_schools(self):
+        self.cur.execute(r"SELECT * from school")
+        rows = self.cur.fetchall()
+        return rows
+
+    def add_school(self, name, param):
+        if param == "add":
+            self.cur.execute(r"INSERT into school VALUES (NUll, ?)", (name, ))
+            self.conn.commit()
+        else:
+            self.cur.execute(r"DELETE FROM school WHERE name=?", (name,))
+            self.conn.commit()
+
+    def add_group(self, group_name, school_id):
+        self.cur.execute(r"SELECT * FROM groups WHERE name=? and schoolid=?", (group_name, school_id))
+        rows = self.cur.fetchall()
+        if (len(rows) > 0):
+            return None
+        else:
+            self.cur.execute(r"INSERT INTO groups VALUES (NUll, ?, ?)", (group_name, school_id))
+            self.conn.commit()
+
+    def get_accounts(self):
+        self.cur.execute(r"SELECT * from accounts")
+        rows = self.cur.fetchall()
+        return rows
+    
+    def add_account(self, account_name):
+        pass

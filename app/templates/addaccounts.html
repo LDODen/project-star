@@ -1,0 +1,30 @@
+{% extends "template.html" %}
+
+{% block content %}
+<h2 class="ui header">Add account</h2>
+
+{%if acc|length > 0%}
+    <ul>
+        {%for a in acc%}
+            <li>
+                <p>{{a}}</p>
+            </li>
+        {%endfor%}
+    </ul>
+{%endif%}
+
+<form class="ui form" method="POST" action="">
+    {{ form.csrf_token }}
+    
+    <div class="field">
+        <div class="four wide field">
+            {{ form.name.label }}
+            {{ form.name }}
+        </div>
+    </div>
+
+    {{ form.submitAdd(class_ = "ui button") }}
+    {{ form.submitDel(class_ = "ui button") }}
+
+</form>
+{% endblock %}

@@ -6,6 +6,14 @@ from dbqueries import dbq #get_groups, viewchildren
 from datetime import datetime, date, timedelta
 
 
+def get_schools():
+    db = dbq("baseStar.db")
+    choices = db.get_schools()
+    ch = []
+    for item in choices:
+        ch.append((item[0], item[1]))
+    return ch
+
 
 def get_groups_choices():
     db = dbq("baseStar.db")
@@ -38,22 +46,21 @@ class RegisterForm(FlaskForm):
 
 
 class AddChildForm(FlaskForm):
-    name = StringField('name', validators = [InputRequired()])
-    group = SelectField('group', choices=get_groups_choices())
-    submit = SubmitField('Add')
+    name = StringField('Имя', validators = [InputRequired()])
+    group = SelectField('Группа', choices=get_groups_choices())
+    submit = SubmitField('Добавить')
 
 
 class DeleteChildForm(FlaskForm):
-    name = StringField('name', validators = [InputRequired()])
-    submit = SubmitField('Delete')
+    name = StringField('Имя ребенка', validators = [InputRequired()])
+    submit = SubmitField('Удалить')
 
 
 class AddDayForm(FlaskForm):
-
-    childName = SelectField('Child name')
-    date = DateField('Date', format="%Y-%m-%d")
-    status = BooleanField('WasOrNot')
-    submit = SubmitField('Add')
+    childName = SelectField('Ребенок')
+    date = DateField('Дата', format="%Y-%m-%d")
+    status = BooleanField('Ходил в сад')
+    submit = SubmitField('Добавить')
 
     def __init__(self, user_id, *args, **kwargs):
         super(AddDayForm, self).__init__(*args, **kwargs)
@@ -70,3 +77,24 @@ class PricesForm(FlaskForm):
     price_date = DateField('Дата цены', format="%Y-%m-%d")
     date_sum = FloatField('Сумма', default = 0.0)
     submit = SubmitField('Установить')
+
+class GroupsForm(FlaskForm):
+    name = StringField('Наименование', validators=[InputRequired()])
+    school = SelectField('Школа/сад/', choices=get_schools())
+    submitAdd = SubmitField('Создать')
+
+
+class SchoolForm(FlaskForm):
+    name = StringField('Наименование', validators=[InputRequired()])
+    submitAdd = SubmitField('Создать')
+    submitDel = SubmitField('Удалить')
+
+
+class AccountsForm(FlaskForm):
+    name = StringField('Наименование', validators = [InputRequired()])
+    submitAdd = SubmitField('Создать')
+    submitDel = SubmitField('Удалить')
+
+
+class PaymentsForm(FlaskForm):
+    pass
